@@ -2,9 +2,14 @@ name: Deploy to Minikube
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ] 
+  pull_request:
+    branches: [ "main" ]
 
+env:
+  AWS_ACCOUNT: "058264097424" 
+  AWS_REGION: "us-east-1" 
+  EKS_CLUSTER_NAME: "demo-app" 
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -13,20 +18,21 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up Minikube
-      uses: manusa/actions-setup-minikube@v2.11.0
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
       with:
-        minikube version: 'v1.31.1'
-        kubernetes version: 'v1.27.3'
-        driver: docker
-
-    - name: Start Minikube
-      run: minikube start --driver=docker
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}  
 
     - name: Set up kubectl
       uses: azure/setup-kubectl@v3
       with:
         version: 'v1.20.6'
 
-    - name: Deploy to Minikube
-      run: kubectl apply -f webapp-deployment.yaml
+    - name: Update kubeconfig
+      run: |
+        aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{ secrets.EKS_CLUSTER_NAME }}
+
+    - name: Deploy to EKS
+      run: kubectl apply -f webapp-deployment.yaml        
