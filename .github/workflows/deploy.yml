@@ -1,0 +1,32 @@
+name: Deploy to Minikube
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Minikube
+      uses: manusa/actions-setup-minikube@v2.11.0
+      with:
+        minikube version: 'v1.31.1'
+        kubernetes version: 'v1.27.3'
+        driver: docker
+
+    - name: Start Minikube
+      run: minikube start --driver=docker
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v3
+      with:
+        version: 'v1.20.6'
+
+    - name: Deploy to Minikube
+      run: kubectl apply -f k8s/webapp-deployment.yaml
