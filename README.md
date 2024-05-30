@@ -1,15 +1,4 @@
 # Install the Vault Helm chart
-Add the HashiCorp Helm repository
-```
-$ helm repo add hashicorp https://helm.releases.hashicorp.com
-"hashicorp" has been added to your repositories
-```
-Update all the repositories to ensure helm is aware of the latest versions.
-```
-$ helm repo update
-Hang tight while we grab the latest from your chart repositories...
-...Successfully got an update from the "hashicorp" chart repository
-Update Complete. ⎈Happy Helming!⎈
 ```
 Create a file named helm-vault-raft-values.yml with the following contents:
 ```
@@ -36,7 +25,8 @@ EOF
 ```
 Install the latest version of the Vault Helm chart with Integrated Storage.
 ```
-$ helm install vault hashicorp/vault --values helm-vault-raft-values.yml
+$ cd hashicorp-vault-deployment
+$ helm install vault ./vault-helmchart -f helm-vault-raft-values.yml
 ```
 This creates three Vault server instances with an Integrated Storage (Raft) backend.
 
