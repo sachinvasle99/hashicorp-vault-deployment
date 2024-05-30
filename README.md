@@ -1,5 +1,4 @@
 # Install the Vault Helm chart
-```
 Create a file named helm-vault-raft-values.yml with the following contents:
 ```
 $ cat > helm-vault-raft-values.yml <<EOF
@@ -347,7 +346,7 @@ $ helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 Install the latest version of the MySQL Helm chart.
 ```
-$ helm install mysql bitnami/mysql
+$ helm install mysql ./mysql-helmchart
 ```
 By default the MySQL Helm chart deploys a single pod a service.
 
@@ -423,7 +422,7 @@ spec:
         vault.hashicorp.com/agent-inject-secret-database-connect.sh: "database/creds/readonly"
         vault.hashicorp.com/agent-inject-template-database-connect.sh: |
           {{- with secret "database/creds/readonly" -}}
-          mysql -h my-release-mysql.default.svc.cluster.local --user={{ .Data.username }} --password={{ .Data.password }} my_database
+          mysql -h mysql.default.svc.cluster.local --user={{ .Data.username }} --password={{ .Data.password }} my_database
           {{- end -}}
     spec:
       serviceAccountName: internal-app
@@ -466,7 +465,7 @@ $ kubectl exec --stdin=true \
 ```
 The result displays a mysql command with the credentials generated for this pod.
 ```
-mysql -h my-release-mysql.default.svc.cluster.local --user=v-kubernetes-readonly-zpqRzAee2b --password=Jb4epAXSirS2s-pnrI9- my_database
+mysql -h mysql.default.svc.cluster.local --user=v-kubernetes-readonly-zpqRzAee2b --password=Jb4epAXSirS2s-pnrI9- my_database
 ```
 ## CI/CD Pipeline:
 ### Consider the deployment pipeline; how will you deploy it?

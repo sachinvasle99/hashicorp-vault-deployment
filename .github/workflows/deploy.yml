@@ -1,4 +1,4 @@
-name: Deploy to Minikube
+name: Deploy to EKS cluster
 
 on:
   push:
