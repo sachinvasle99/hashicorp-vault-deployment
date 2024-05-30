@@ -469,6 +469,7 @@ mysql -h mysql.default.svc.cluster.local --user=v-kubernetes-readonly-zpqRzAee2b
 ```
 ## CI/CD Pipeline:
 ### Consider the deployment pipeline; how will you deploy it?
+First configure the required secrets like AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, EKS_CLUSTER_NAME in the setting of the githuba actions.
 Example GitHub Actions workflow for deployment:
 ```
 name: Deploy to Minikube

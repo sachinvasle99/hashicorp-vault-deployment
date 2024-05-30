@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [ "main" ]
 
-env:
-  AWS_ACCOUNT: "058264097424" 
-  AWS_REGION: "us-east-1" 
-  EKS_CLUSTER_NAME: "demo-app" 
 jobs:
   deploy:
     runs-on: ubuntu-latest
